@@ -1,0 +1,28 @@
+version: '3'
+
+
+services:
+    app:
+        build: .
+        entrypoint: .docker/entrypoint.sh
+        container_name: superadmin-api
+        ports:
+            - 3000:3000
+        volumes:
+            - .:/home/node/app
+        depends_on:
+            - db
+#db mysql 8 na pasta .docker/mysql
+    db:
+        image: mysql:8
+        container_name: superadmin-db
+        ports:
+            - 3306:3306
+        volumes:
+            - .docker/mysql:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: superadmin
+            MYSQL_USER: superadmin
+            MYSQL_PASSWORD: superadmin
+        command: --default-authentication-plugin=mysql_native_password
