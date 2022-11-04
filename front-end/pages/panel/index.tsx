@@ -1,9 +1,8 @@
 import type { NextPage } from "next";
+import { unstable_getServerSession } from "next-auth";
 import Head from "next/head";
-import BtnLogin from "../components/btnlogin";
-import styles from "../styles/Home.module.css";
-import { unstable_getServerSession } from "next-auth/next"
-import { authOptions } from './api/auth/[...nextauth]'
+import styles from "../../styles/Home.module.css";
+import { authOptions } from "../api/auth/[...nextauth]";
 
 const Home: NextPage = () => {
         return (
@@ -19,9 +18,8 @@ const Home: NextPage = () => {
 
             <main className={styles.main}>
                 <h1 className={styles.title}>
-                    Nextjs + NestJs + Keycloak
+                    Area restrita
                 </h1>
-                <BtnLogin />
             </main>
         </div>
     );
@@ -31,15 +29,16 @@ export async function getServerSideProps(context: { req: any; res: any; }) {
     const { req, res } = context;
     const session = await unstable_getServerSession(req, res, authOptions);
 
-    if (session) {
+    if (!session) {
             return {
             redirect: {
-                destination: '/panel',
+                destination: '/',
                 permanent: false,
             },
         }
     }
-    
+    //serialize session
+
         return {
             props: {
             session: JSON.stringify(session),
