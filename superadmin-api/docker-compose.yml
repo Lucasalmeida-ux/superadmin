@@ -10,6 +10,8 @@ services:
             - 3001:3000
         volumes:
             - .:/home/node/app
+        extra_hosts:
+            - "host.docker.internal:172.17.0.1"
         depends_on:
             - db
 #db mysql 8 na pasta .docker/mysql
