@@ -1,6 +1,10 @@
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import KeycloakProvider, { KeycloakProfile } from "next-auth/providers/keycloak";
+import prisma from "../../../lib/prismadb"
+
 export const authOptions: NextAuthOptions = {
+    adapter: PrismaAdapter(prisma),
     providers: [
         KeycloakProvider<KeycloakProfile>({
             clientId: process.env.KEYCLOAK_ID as string,
@@ -16,7 +20,7 @@ export const authOptions: NextAuthOptions = {
         async session({ session, user, token }) {
             console.log("🚀 ~ file: [...nextauth].ts ~ line 21 ~ session ~ { session, user, token }", { session, user, token })
             return session
-        },
+        }
     }
 };
 

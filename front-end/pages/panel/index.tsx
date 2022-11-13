@@ -1,12 +1,44 @@
+import { getToken } from "next-auth/jwt"
+import { Avatar} from 'antd';
+import React from 'react';
 import type { NextPage } from "next";
 import { unstable_getServerSession } from "next-auth";
 import Head from "next/head";
-import styles from "../../styles/Home.module.css";
 import { authOptions } from "../api/auth/[...nextauth]";
+import { LayoutAdmin } from '../../components/layout';
+import { Card } from 'antd';
+import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import Meta from 'antd/lib/card/Meta';
+import { useSession } from 'next-auth/react';
 
-const Home: NextPage = () => {
-        return (
-        <div className={styles.container}>
+//importar sessão do usuário
+
+
+//card component antd
+const CardSorteio = () => {
+    return (
+        <Card
+    style={{ width: 300 }}
+    actions={[
+        <SettingOutlined key="setting" />,
+        <EditOutlined key="edit" />,
+        <EllipsisOutlined key="ellipsis" />,
+    ]}
+>
+    <Meta
+        avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+        title="Card title"
+        description="This is the description"
+    />
+</Card>
+    );
+}
+
+
+
+const Home: NextPage = (props) => {
+    const { data: session, status } = useSession();
+    return <>
             <Head>
                 <title>Auth</title>
                 <meta
@@ -15,14 +47,10 @@ const Home: NextPage = () => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
-            <main className={styles.main}>
-                <h1 className={styles.title}>
-                    Area restrita
-                </h1>
-            </main>
-        </div>
-    );
+        <LayoutAdmin>
+            <CardSorteio />
+        </LayoutAdmin>
+        </>
 };
 
 export async function getServerSideProps(context: { req: any; res: any; }) {

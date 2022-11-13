@@ -14,7 +14,27 @@ a {
 * {
   box-sizing: border-box;
 }
+.trigger:hover {
+  color: #1890ff;
+}
 
+.logo {
+  height: 32px;
+  margin: 16px;
+  color: #fff;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.layout {
+  height: 100vh;
+}
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
