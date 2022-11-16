@@ -66,3 +66,40 @@ O código de acesso é enviado/solicitado
 
 ## Multitenancy
 A multilocação de software é uma arquitetura de software na qual uma única instância de software é executada em um servidor e atende a vários inquilinos. Os sistemas projetados dessa maneira são "compartilhados".
+
+
+
+
+
+
+
+
+
+
+## Entregável
+
+### FrontEnd
+- Criar e configurar repositórios no github com os prjetos de front e back end(10h)
+- Integração com antD no nextjs (16h)
+- Tela inicial (apenas o botão de login) (10h)
+    - Quando o usuário clicar no botão de login será redirecionado para a página de login do keycloak, ao se autenticar voltará para a página do dashboard 
+- Integrar com nestjs (16h)
+    - Criar um serviço que se comunica com a api do nestjs para trazer os dados da plataforma de sorteio
+- dashboard (20h)
+    A dashboard tera uma barra superior com o botão de logout e a listagem das plataformas de sorteio
+    ao clicar em uma plataforma o usuário é redirecionado para uma página com dados da plataforma de sorteio
+
+
+### BackEnd
+Criar servidor keycloak e configurar realms, usuário do superadmin e permissão de ler os dados da plataforma de sorteio (16h)
+#### Nestjs
+- Criar verificação das permissoes 16h
+- Criar conexão com o orquestrador a partir de login e senha (admin do orquestrador) (10h)
+- Buscar as promoções que o usuário tem acesso no nest e devolver para o front (14h)
+
+
+#### Orquestrador plataformadesorteio (16)
+- Modifico o promotion/api/me para retornar todas as promotion ids que o usuário tem acesso 
+- Listar várias promoções
+    - /api/promotion
+    - Recebe vários ids e retorna os dados das promoções

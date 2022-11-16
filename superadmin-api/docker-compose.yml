@@ -28,3 +28,10 @@ services:
             MYSQL_USER: superadmin
             MYSQL_PASSWORD: superadmin
         command: --default-authentication-plugin=mysql_native_password
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        ports:
+            - 8081:80
+        environment:
+            - PMA_ARBITRARY=1
