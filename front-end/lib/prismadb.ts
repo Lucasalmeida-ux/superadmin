@@ -16,6 +16,5 @@ if (process.env.NODE_ENV === 'production') {
         global.prisma = new PrismaClient()
     }
     prisma = global.prisma
-    console.log("🚀 ~ file: prismadb.ts ~ line 19 ~ prisma", prisma)
 }
 export default prisma
