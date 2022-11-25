@@ -1,30 +1,38 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
-import { firstValueFrom } from 'rxjs';
+import { HttpException, Injectable } from '@nestjs/common';
+import { catchError, firstValueFrom } from 'rxjs';
+import { PrismaService } from 'src/prisma.service';
+import { Session, Prisma } from '@prisma/client';
 //Reactive X
 @Injectable()
 export class AuthService {
-    constructor(private http: HttpService) {}
+    constructor(private http: HttpService, private prisma: PrismaService) {}
 
     async login(username: string, password: string) {
-        console.log(
-            '🚀 ~ file: auth.service.ts ~ line 10 ~ AuthService ~ login ~ username: string, password: string',
-            username,
-            password,
-            process.env.KEYCLOAK_CLIENT_SECRET,
-        );
-        const { data } = await firstValueFrom(
-            this.http.post(
-                'http://host.docker.internal:8080/auth/realms/superadmin/protocol/openid-connect/token',
-                new URLSearchParams({
-                    client_id: 'nestjs',
-                    client_secret: process.env.KEYCLOAK_CLIENT_SECRET,
-                    grant_type: 'password',
-                    username,
-                    password,
-                }),
-            ),
-        );
+        const promise = this.http.post(
+            'http://host.docker.internal:8080/auth/realms/superadmin/protocol/openid-connect/token',
+            new URLSearchParams({
+                client_id: process.env.CLIENT_ID,
+                client_secret: process.env.KEYCLOAK_CLIENT_SECRET,
+                grant_type: 'password',
+                username,
+                password,
+            }),
+        ).pipe(
+            catchError(e => {
+                console.log("error", e.response.data)
+              throw new HttpException(e.response.data, e.response.status);
+            }),
+          );
+        const { data } = await firstValueFrom(promise);
+
         return data;
+    }
+    async createSession(data: Prisma.SessionCreateInput) {
+      console.log("data ", data);  
+      
+      return this.prisma.session.create({
+          data,
+        });
     }
 }

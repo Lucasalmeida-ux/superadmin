@@ -27,24 +27,23 @@ const Home: NextPage = () => {
     );
 };
 
-// export async function getServerSideProps(context: { req: any; res: any; }) {
-    // const { req, res } = context;
-    // const session = await unstable_getServerSession(req, res, authOptions);
+export async function getServerSideProps(context: { req: any; res: any; }) {
+    const { req, res } = context;
+    const session = await unstable_getServerSession(req, res, authOptions);
 
-    // if (session) {
-    //         return {
-    //         redirect: {
-    //             destination: '/panel',
-    //             permanent: false,
-    //         },
-    //     }
-    // }
+    if (session) {
+            return {
+            redirect: {
+                destination: '/panel',
+                permanent: false,
+            },
+        }
+    }
     
-    //     return {
-    //         props: {
-    //         session: JSON.stringify(session),
-    //         },
-        // }
-// }
+        return {
+            props: {
+            },
+        }
+}
 
 export default Home;
