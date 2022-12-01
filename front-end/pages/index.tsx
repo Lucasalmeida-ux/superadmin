@@ -4,6 +4,7 @@ import BtnLogin from "../components/btnlogin";
 import styles from "../styles/Home.module.css";
 import { unstable_getServerSession } from "next-auth/next"
 import { authOptions } from './api/auth/[...nextauth]'
+import { LayoutAdmin } from "../components/layout";
 
 const Home: NextPage = () => {
         return (
@@ -17,12 +18,9 @@ const Home: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className={styles.main}>
-                <h1 className={styles.title}>
-                    Nextjs + NestJs + Keycloak
-                </h1>
-                <BtnLogin />
-            </main>
+           <LayoutAdmin>
+
+           </LayoutAdmin>
         </div>
     );
 };

@@ -11,30 +11,6 @@ import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/ico
 import Meta from 'antd/lib/card/Meta';
 import { useSession } from 'next-auth/react';
 
-//importar sessão do usuário
-
-
-//card component antd
-const CardSorteio = () => {
-    return (
-        <Card
-    style={{ width: 300 }}
-    actions={[
-        <SettingOutlined key="setting" />,
-        <EditOutlined key="edit" />,
-        <EllipsisOutlined key="ellipsis" />,
-    ]}
->
-    <Meta
-        avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-        title="Card title"
-        description="This is the description"
-    />
-</Card>
-    );
-}
-
-
 
 const Home: NextPage = (props) => {
 
@@ -48,7 +24,6 @@ const Home: NextPage = (props) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
         <LayoutAdmin>
-            <CardSorteio />
         </LayoutAdmin>
         </>
 };

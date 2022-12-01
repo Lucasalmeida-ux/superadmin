@@ -2,7 +2,6 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function BtnLogin() {
     const { data: session } = useSession();
-    console.log("🚀 ~ file: btnlogin.tsx ~ line 5 ~ BtnLogin ~ session", session)
     if (session && session.user) {
         return (
             <>

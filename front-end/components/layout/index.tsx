@@ -1,66 +1,101 @@
 import {
+    HomeOutlined,
+    LoginOutlined,
     LogoutOutlined,
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
     TrophyOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import React, { useState } from 'react';
 import { FC } from 'react';
 // importar a função de logout
-import { signOut } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { Items } from '../../types/item';
 
-interface LayoutProps {
+type LayoutProps = {
     children?: React.ReactNode;
+    menuItems: Items[];
 }
-export const LayoutAdmin: FC<LayoutProps> = (props) =>{
+export const LayoutAdmin: FC<LayoutProps> = ({ menuItems = null, children }) => {
     const { Header, Sider, Content } = Layout;
     const [collapsed, setCollapsed] = useState(false);
-return <>
-    <Layout className="layout">
-                <Sider trigger={null} collapsible collapsed={collapsed}>
-                    <div className="logo"> SUPER ADMIN</div>
+    const router = useRouter()
+    const session = useSession();
+    const topBarMenuItens = session.data ? [
+        {
+            key: 'home',
+            icon: <HomeOutlined />,
+            label: 'Home',
+            onClick: () => router.push('/panel'),
+        },
+        {
+            key: 'plataforms',
+            icon: <TrophyOutlined />,
+            label: 'Plataformas',
+            onClick: () => router.push('/panel/platforms'),
+        },
+        {
+            key: 'logout',
+            icon: <LogoutOutlined />,
+            label: 'Sair',
+            onClick: () => signOut(),
+        },
+    ] : [
+        {
+            key: 'login',
+            icon: <LoginOutlined />,
+            label: 'Entrar',
+            onClick: () => signIn("keycloak"),
+        },
+    ]
+
+    return <>
+        <Layout className="layout">
+            {menuItems && <Sider trigger={null} collapsible collapsed={collapsed}>
+                <div className="logo"> SUPER ADMIN</div>
+                <Menu
+                    theme="dark"
+                    mode="inline"
+                // defaultSelectedKeys={defaultSelectedKey ? [defaultSelectedKey] : []}
+                >
+                    {menuItems && menuItems.map((item:Items) => {
+                        return (
+                            <Menu.Item key={item.key} icon={item.icon} onClick={() => router.push(item.url || "/")}>
+                                {item.label}
+                            </Menu.Item>
+                        );
+                    }
+                    )}
+                </Menu>
+            </Sider>}
+            <Layout className="site-layout">
+                <Header
+                    className="site-layout-background"
+                    style={{
+                        padding: 0,
+                    }}
+                >
+                    {/* {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                            className: 'trigger',
+                            onClick: () => setCollapsed(!collapsed),
+                        })} */}
                     <Menu
                         theme="dark"
-                        mode="inline"
-                        defaultSelectedKeys={['1']}
-                        items={[
-                            {
-                                key: '1',
-                                icon: <TrophyOutlined />,
-                                label: 'Plataforma de sorteio',
-                            },
-                            {
-                                key: '2',
-                                icon: <LogoutOutlined />,
-                                label: 'Logout',
-                                onClick: () => signOut(),
-                            },
-                        ]}
+                        mode="horizontal"
+                        // defaultSelectedKeys={['1']}
+                        items={topBarMenuItens}
                     />
-                </Sider>
-                <Layout className="site-layout">
-                    <Header
-                        className="site-layout-background"
-                        style={{
-                        padding: 0,
-                        }}
-                    >
-                    {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                        className: 'trigger',
-                        onClick: () => setCollapsed(!collapsed),
-                    })}
-                    </Header>
-                    <Content
-                        className="site-layout-background"
-                        style={{
+                </Header>
+                <Content
+                    className="site-layout-background"
+                    style={{
                         margin: '24px 16px',
                         padding: 24,
-                        }}
-                    >
-                    {props.children}
-                    </Content>
+                    }}
+                >
+                    {children}
+                </Content>
             </Layout>
-            </Layout>
-        </>
+        </Layout>
+    </>
 }
