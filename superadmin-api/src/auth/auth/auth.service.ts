@@ -1,12 +1,11 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, Injectable } from '@nestjs/common';
 import { catchError, firstValueFrom } from 'rxjs';
-import { PrismaService } from 'src/prisma.service';
-import { Session, Prisma } from '@prisma/client';
+
 //Reactive X
 @Injectable()
 export class AuthService {
-    constructor(private http: HttpService, private prisma: PrismaService) {}
+    constructor(private http: HttpService) {}
 
     async login(username: string, password: string) {
         const promise = this.http.post(
@@ -27,12 +26,5 @@ export class AuthService {
         const { data } = await firstValueFrom(promise);
 
         return data;
-    }
-    async createSession(data: Prisma.SessionCreateInput) {
-      console.log("data ", data);  
-      
-      return this.prisma.session.create({
-          data,
-        });
     }
 }

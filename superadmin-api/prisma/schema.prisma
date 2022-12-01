@@ -11,17 +11,13 @@ datasource db {
 }
 
 //user model
-model Session {
+model Platforms {
     id                     Int      @id @default(autoincrement())
-    providerAccountId      String
-    access_token           String
-    expires_at             DateTime
-    refresh_expires_in     Int
-    refresh_token          String
-    token_type             String
-    id_token               String
-    session_state          String
-    scope                  String
+    name                   String
+    ip                     String
+    port                   Int
+    username               String
+    password               String
     createdAt              DateTime @default(now())
     updatedAt              DateTime @updatedAt
 }
